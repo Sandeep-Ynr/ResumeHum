@@ -18,11 +18,11 @@ app.use(express.json());
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 // Cloudinary Configuration
-cloudinary.config({
-  cloud_name: 'stadmjow',
-  api_key: '429178597634627',
-  api_secret: 'jSZx3eR-PVM7IPby46iH0pY_a1M'
-});
+if (process.env.CLOUDINARY_URL) {
+  // It will automatically parse from process.env.CLOUDINARY_URL
+} else {
+  console.warn('CLOUDINARY_URL environment variable is not set!');
+}
 
 // Multer Setup with Cloudinary Storage
 const storage = new CloudinaryStorage({
@@ -199,6 +199,16 @@ app.get('/api/nannies/:id', async (req, res) => {
     console.error('Error fetching nanny details:', error);
     res.status(500).json({ error: 'Failed to fetch nanny details' });
   }
+});
+
+// Global Error Handler (catches Multer/Cloudinary errors)
+app.use((err, req, res, next) => {
+  console.error('Global Error Handler:', err);
+  res.status(500).json({ 
+    error: 'Internal Server Error (Middleware)', 
+    details: err.message, 
+    code: err.http_code || err.code || 'Unknown' 
+  });
 });
 
 app.listen(PORT, () => {
