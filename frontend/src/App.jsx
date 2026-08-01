@@ -6,7 +6,7 @@ import NannyDetails from './components/NannyDetails';
 
 function App() {
   return (
-    <BrowserRouter>
+    <BrowserRouter basename="/ResumeHum">
       <div className="app-container">
         <header className="app-header">
           <h1>NANNY REGISTRATION</h1>
