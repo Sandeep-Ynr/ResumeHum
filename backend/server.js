@@ -141,7 +141,12 @@ app.post('/api/nannies', upload.any(), async (req, res) => {
 
   } catch (error) {
     console.error('Registration Error:', error);
-    res.status(500).json({ error: 'Failed to register nanny', details: error.message, stack: error.stack });
+    res.status(500).json({ 
+      error: 'Failed to register nanny', 
+      details: error ? error.toString() : 'Unknown',
+      code: error && error.code ? error.code : 'No code',
+      stack: error && error.stack ? error.stack : 'No stack'
+    });
   }
 });
 
