@@ -42,14 +42,19 @@ const upload = multer({ storage: storage });
 // API Route for Nanny Registration
 app.post('/api/nannies', upload.any(), async (req, res) => {
   try {
+    if (!req.body || !req.body.data) {
+      throw new Error('Form data payload is missing or undefined.');
+    }
     const nannyData = JSON.parse(req.body.data);
     const skills = nannyData.skills || [];
     const references = nannyData.references || [];
     
+    const files = req.files || [];
+
     // Process uploaded files
-    const documents = req.files.map(file => ({
+    const documents = files.map(file => ({
       type: file.fieldname,
-      path: file.path // This will now be the secure Cloudinary URL
+      path: file.path // Secure Cloudinary URL
     }));
 
     // Call the stored procedure
@@ -74,7 +79,7 @@ app.post('/api/nannies', upload.any(), async (req, res) => {
 
     // Email Sending Logic
     try {
-      const resumeFile = req.files.find(f => f.fieldname === 'resume');
+      const resumeFile = files.find(f => f.fieldname === 'resume');
       
       const transporter = nodemailer.createTransport({
         service: 'gmail',
@@ -136,7 +141,7 @@ app.post('/api/nannies', upload.any(), async (req, res) => {
 
   } catch (error) {
     console.error('Registration Error:', error);
-    res.status(500).json({ error: 'Failed to register nanny. ' + error.message });
+    res.status(500).json({ error: 'Failed to register nanny', details: error.message, stack: error.stack });
   }
 });
 
