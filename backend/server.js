@@ -83,9 +83,12 @@ app.post('/api/nannies', upload.any(), async (req, res) => {
         }
       });
 
+      const [settings] = await db.query('SELECT setting_value FROM settings WHERE setting_key = "receiver_email"');
+      const receiverEmail = settings.length > 0 ? settings[0].setting_value : (process.env.RECEIVER_EMAIL || 'sandeep327hr@gmail.com');
+
       const mailOptions = {
         from: `"Nanny Registration Portal" <${process.env.SMTP_EMAIL}>`,
-        to: process.env.RECEIVER_EMAIL || 'sandeep327hr@gmail.com',
+        to: receiverEmail,
         subject: `New Nanny Registration: ${nannyData.fullName}`,
         html: `
           <div style="font-family: Arial, sans-serif; padding: 20px; color: #333;">
@@ -217,7 +220,54 @@ app.use((err, req, res, next) => {
   });
 });
 
-app.listen(PORT, () => {
+// GET Settings
+app.get('/api/settings', async (req, res) => {
+  try {
+    const [rows] = await db.query('SELECT setting_key, setting_value FROM settings');
+    const settings = {};
+    rows.forEach(row => {
+      settings[row.setting_key] = row.setting_value;
+    });
+    res.json(settings);
+  } catch (error) {
+    console.error('Error fetching settings:', error);
+    res.status(500).json({ error: 'Failed to fetch settings' });
+  }
+});
+
+// POST Settings
+app.post('/api/settings', async (req, res) => {
+  try {
+    const { receiver_email } = req.body;
+    if (receiver_email) {
+      await db.query(
+        'INSERT INTO settings (setting_key, setting_value) VALUES ("receiver_email", ?) ON DUPLICATE KEY UPDATE setting_value = ?',
+        [receiver_email, receiver_email]
+      );
+    }
+    res.json({ message: 'Settings updated successfully' });
+  } catch (error) {
+    console.error('Error updating settings:', error);
+    res.status(500).json({ error: 'Failed to update settings' });
+  }
+});
+
+app.listen(PORT, async () => {
+  try {
+    await db.query(`
+      CREATE TABLE IF NOT EXISTS settings (
+        setting_key VARCHAR(100) PRIMARY KEY,
+        setting_value VARCHAR(255) NOT NULL
+      )
+    `);
+    await db.query(`
+      INSERT IGNORE INTO settings (setting_key, setting_value) 
+      VALUES ('receiver_email', 'sandeep327hr@gmail.com')
+    `);
+    console.log('Settings table initialized.');
+  } catch (error) {
+    console.error('Error initializing settings table:', error);
+  }
   console.log(`Server is running on port ${PORT}`);
 });
 

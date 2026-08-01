@@ -8,6 +8,11 @@ const AdminPanel = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [searchTerm, setSearchTerm] = useState('');
+  
+  // Settings State
+  const [receiverEmail, setReceiverEmail] = useState('');
+  const [savingSettings, setSavingSettings] = useState(false);
+  const [settingsMessage, setSettingsMessage] = useState('');
 
   useEffect(() => {
     const fetchNannies = async () => {
@@ -15,6 +20,12 @@ const AdminPanel = () => {
         const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
         const response = await axios.get(`${API_BASE_URL}/api/nannies`);
         setNannies(response.data);
+        
+        // Fetch Settings
+        const settingsRes = await axios.get(`${API_BASE_URL}/api/settings`);
+        if (settingsRes.data && settingsRes.data.receiver_email) {
+          setReceiverEmail(settingsRes.data.receiver_email);
+        }
       } catch (err) {
         console.error('Error fetching data:', err);
         setError('Failed to load nanny data. Please make sure the backend is running.');
@@ -24,6 +35,22 @@ const AdminPanel = () => {
     };
     fetchNannies();
   }, []);
+
+  const saveSettings = async () => {
+    setSavingSettings(true);
+    setSettingsMessage('');
+    try {
+      const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+      await axios.post(`${API_BASE_URL}/api/settings`, { receiver_email: receiverEmail });
+      setSettingsMessage('Settings saved successfully!');
+      setTimeout(() => setSettingsMessage(''), 3000);
+    } catch (error) {
+      console.error('Error saving settings:', error);
+      setSettingsMessage('Failed to save settings.');
+    } finally {
+      setSavingSettings(false);
+    }
+  };
 
   const filteredNannies = nannies.filter(nanny => 
     nanny.full_name?.toLowerCase().includes(searchTerm.toLowerCase()) || 
@@ -63,6 +90,44 @@ const AdminPanel = () => {
           {error}
         </div>
       )}
+
+      {/* Settings Section */}
+      <div className="glass-container" style={{ padding: '24px', marginBottom: '24px', display: 'flex', flexWrap: 'wrap', gap: '16px', alignItems: 'center' }}>
+        <div style={{ flex: 1, minWidth: '250px' }}>
+          <h3 style={{ color: 'white', marginBottom: '8px', fontSize: '1.2rem' }}>Email Notifications</h3>
+          <p style={{ color: '#9ca3af', fontSize: '0.9rem', margin: 0 }}>Set the receiver email address for new nanny registrations.</p>
+        </div>
+        <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap', alignItems: 'center' }}>
+          <input 
+            type="email" 
+            value={receiverEmail}
+            onChange={(e) => setReceiverEmail(e.target.value)}
+            placeholder="admin@example.com"
+            style={{ 
+              padding: '12px 16px', 
+              borderRadius: '8px', 
+              border: '1px solid rgba(255, 255, 255, 0.1)', 
+              background: 'rgba(0, 0, 0, 0.2)',
+              color: 'white',
+              outline: 'none',
+              width: '250px'
+            }} 
+          />
+          <button 
+            className="btn" 
+            onClick={saveSettings}
+            disabled={savingSettings}
+            style={{ padding: '12px 24px', whiteSpace: 'nowrap' }}
+          >
+            {savingSettings ? 'Saving...' : 'Save Settings'}
+          </button>
+          {settingsMessage && (
+            <span style={{ color: settingsMessage.includes('successfully') ? '#10b981' : '#ef4444', fontSize: '0.9rem' }}>
+              {settingsMessage}
+            </span>
+          )}
+        </div>
+      </div>
 
       <div className="glass-container" style={{ padding: '24px', overflowX: 'auto' }}>
         {loading ? (
