@@ -1,9 +1,10 @@
 const express = require('express');
 const cors = require('cors');
 const multer = require('multer');
-const path = require('path');
-const fs = require('fs');
+const { CloudinaryStorage } = require('multer-storage-cloudinary');
+const cloudinary = require('cloudinary').v2;
 const nodemailer = require('nodemailer');
+const path = require('path');
 require('dotenv').config();
 
 const db = require('./db');
@@ -16,21 +17,24 @@ app.use(cors());
 app.use(express.json());
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
-// Ensure uploads directory exists
-const uploadDir = path.join(__dirname, 'uploads');
-if (!fs.existsSync(uploadDir)) {
-  fs.mkdirSync(uploadDir);
-}
+// Cloudinary Configuration
+cloudinary.config({
+  cloud_name: 'stadmjow',
+  api_key: '429178597634627',
+  api_secret: 'jSZx3eR-PVM7IPby46iH0pY_a1M'
+});
 
-// Multer Setup for File Uploads
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, 'uploads/');
+// Multer Setup with Cloudinary Storage
+const storage = new CloudinaryStorage({
+  cloudinary: cloudinary,
+  params: {
+    folder: 'resumehub',
+    allowed_formats: ['jpg', 'png', 'jpeg', 'pdf'],
+    public_id: (req, file) => {
+      const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
+      return file.fieldname + '-' + uniqueSuffix;
+    },
   },
-  filename: function (req, file, cb) {
-    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
-    cb(null, file.fieldname + '-' + uniqueSuffix + path.extname(file.originalname));
-  }
 });
 
 const upload = multer({ storage: storage });
@@ -45,7 +49,7 @@ app.post('/api/nannies', upload.any(), async (req, res) => {
     // Process uploaded files
     const documents = req.files.map(file => ({
       type: file.fieldname,
-      path: file.path.replace(/\\/g, '/') // Ensure forward slashes for paths
+      path: file.path // This will now be the secure Cloudinary URL
     }));
 
     // Call the stored procedure
@@ -108,17 +112,14 @@ app.post('/api/nannies', upload.any(), async (req, res) => {
                   </td>
                 </tr>` : ''}
             </table>
-            <p style="margin-top: 20px;">Please find their uploaded resume attached to this email.</p>
+            <p style="margin-top: 20px;">
+              <strong>Resume Document:</strong> 
+              ${resumeFile ? `<a href="${resumeFile.path}">Click here to view/download resume</a>` : 'No resume uploaded'}
+            </p>
             <br/>
             <p style="font-size: 12px; color: #888;">This is an automated message from the Nanny Registration Portal.</p>
           </div>
-        `,
-        attachments: resumeFile ? [
-          {
-            filename: resumeFile.originalname,
-            path: resumeFile.path
-          }
-        ] : []
+        `
       };
 
       await transporter.sendMail(mailOptions);
@@ -188,3 +189,5 @@ app.get('/api/nannies/:id', async (req, res) => {
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
+
+module.exports = app;

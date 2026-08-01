@@ -12,7 +12,8 @@ const NannyDetails = () => {
   useEffect(() => {
     const fetchNannyDetails = async () => {
       try {
-        const response = await axios.get(`http://localhost:5000/api/nannies/${id}`);
+        const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+        const response = await axios.get(`${API_BASE_URL}/api/nannies/${id}`);
         setNanny(response.data);
       } catch (err) {
         console.error('Error fetching data:', err);
@@ -154,10 +155,14 @@ const NannyDetails = () => {
               <div style={{ color: '#9ca3af', fontSize: '0.9rem', marginBottom: '8px' }}>
                 <strong>ID Type:</strong> {nanny.gov_id_type} ({nanny.gov_id_number})
               </div>
-              {nanny.documents.map((doc, idx) => (
+              {nanny.documents.map((doc, idx) => {
+                const docUrl = doc.file_path.startsWith('http') 
+                  ? doc.file_path 
+                  : `${import.meta.env.VITE_API_URL || 'http://localhost:5000'}/${doc.file_path}`;
+                return (
                 <a 
                   key={idx} 
-                  href={`http://localhost:5000/${doc.file_path}`} 
+                  href={docUrl} 
                   target="_blank" 
                   rel="noopener noreferrer"
                   style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '12px 16px', background: 'rgba(139, 92, 246, 0.1)', border: '1px solid rgba(139, 92, 246, 0.3)', borderRadius: '8px', color: '#d8b4fe', textDecoration: 'none', transition: 'all 0.2s' }}
@@ -169,7 +174,8 @@ const NannyDetails = () => {
                   </div>
                   <Eye size={16} />
                 </a>
-              ))}
+                );
+              })}
             </div>
           ) : <div style={{ color: '#9ca3af' }}>No documents uploaded.</div>}
         </section>
