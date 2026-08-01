@@ -204,6 +204,18 @@ app.get('/api/nannies/:id', async (req, res) => {
 // Global Error Handler (catches Multer/Cloudinary errors)
 app.use((err, req, res, next) => {
   console.error('Global Error Handler:', err);
+  
+  // Write error to a file so I can read it!
+  const fs = require('fs');
+  const path = require('path');
+  const errorLog = {
+    time: new Date().toISOString(),
+    message: err.message,
+    code: err.http_code || err.code || 'Unknown',
+    stack: err.stack
+  };
+  fs.writeFileSync(path.join(__dirname, 'uploads', 'error.log'), JSON.stringify(errorLog, null, 2));
+
   res.status(500).json({ 
     error: 'Internal Server Error (Middleware)', 
     details: err.message, 
