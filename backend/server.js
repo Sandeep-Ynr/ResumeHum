@@ -156,7 +156,12 @@ app.get('/api/nannies', async (req, res) => {
     res.json(rows);
   } catch (error) {
     console.error('Error fetching nannies:', error);
-    res.status(500).json({ error: 'Failed to fetch nannies', details: error.message });
+    res.status(500).json({ 
+      error: 'Failed to fetch nannies', 
+      details: error ? error.toString() : 'Unknown',
+      code: error && error.code ? error.code : 'No code',
+      stack: error && error.stack ? error.stack : 'No stack'
+    });
   }
 });
 
