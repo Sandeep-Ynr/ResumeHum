@@ -1,8 +1,6 @@
 const express = require('express');
 const cors = require('cors');
 const multer = require('multer');
-const { CloudinaryStorage } = require('multer-storage-cloudinary');
-const cloudinary = require('cloudinary').v2;
 const nodemailer = require('nodemailer');
 const path = require('path');
 require('dotenv').config();
@@ -17,24 +15,20 @@ app.use(cors());
 app.use(express.json());
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
-// Cloudinary Configuration
-if (process.env.CLOUDINARY_URL) {
-  // It will automatically parse from process.env.CLOUDINARY_URL
-} else {
-  console.warn('CLOUDINARY_URL environment variable is not set!');
-}
-
-// Multer Setup with Cloudinary Storage
-const storage = new CloudinaryStorage({
-  cloudinary: cloudinary,
-  params: {
-    folder: 'resumehub',
-    allowed_formats: ['jpg', 'png', 'jpeg', 'pdf'],
-    public_id: (req, file) => {
-      const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
-      return file.fieldname + '-' + uniqueSuffix;
-    },
+// Multer Setup with Local Storage
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    const uploadPath = path.join(__dirname, 'uploads');
+    // Ensure the uploads directory exists
+    if (!require('fs').existsSync(uploadPath)) {
+      require('fs').mkdirSync(uploadPath, { recursive: true });
+    }
+    cb(null, uploadPath);
   },
+  filename: function (req, file, cb) {
+    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
+    cb(null, file.fieldname + '-' + uniqueSuffix + path.extname(file.originalname));
+  }
 });
 
 const upload = multer({ storage: storage });
@@ -51,10 +45,10 @@ app.post('/api/nannies', upload.any(), async (req, res) => {
     
     const files = req.files || [];
 
-    // Process uploaded files
+    // Process uploaded files and convert to full URL
     const documents = files.map(file => ({
       type: file.fieldname,
-      path: file.path // Secure Cloudinary URL
+      path: `https://api.resumebuilder.vayunexsolution.com/uploads/${file.filename}` 
     }));
 
     // Call the stored procedure
