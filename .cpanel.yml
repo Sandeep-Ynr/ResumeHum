@@ -1,5 +1,3 @@
----
 deployment:
   tasks:
-    - export DEPLOYPATH=/home/vayunexs/api.resumebuilder.vayunexsolution.com
-    - /bin/cp -R backend/* $DEPLOYPATH/
+    - /bin/cp -Rf backend/. /home/vayunexs/api.resumebuilder.vayunexsolution.com/
