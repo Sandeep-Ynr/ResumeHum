@@ -61,12 +61,12 @@ const AdminPanel = () => {
   return (
     <div className="animate-fade-in" style={{ padding: '20px 0' }}>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '32px', flexWrap: 'wrap', gap: '16px' }}>
-        <h2 style={{ fontSize: '2rem', color: 'white', display: 'flex', alignItems: 'center', gap: '12px' }}>
-          <Users size={32} color="#8b5cf6" /> Admin Dashboard
+        <h2 style={{ fontSize: '2rem', color: 'var(--text-primary)', display: 'flex', alignItems: 'center', gap: '12px' }}>
+          <Users size={32} color="var(--primary)" /> Admin Dashboard
         </h2>
         
         <div style={{ position: 'relative', width: '100%', maxWidth: '350px' }}>
-          <Search size={20} color="#9ca3af" style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)' }} />
+          <Search size={20} color="var(--text-secondary)" style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)' }} />
           <input 
             type="text" 
             placeholder="Search by name, phone, or email..." 
@@ -76,9 +76,9 @@ const AdminPanel = () => {
               width: '100%', 
               padding: '12px 12px 12px 40px', 
               borderRadius: '8px', 
-              border: '1px solid rgba(255, 255, 255, 0.1)', 
-              background: 'rgba(0, 0, 0, 0.2)',
-              color: 'white',
+              border: '1px solid var(--border-color)', 
+              background: 'var(--input-bg)',
+              color: 'var(--text-primary)',
               outline: 'none'
             }} 
           />
@@ -94,8 +94,8 @@ const AdminPanel = () => {
       {/* Settings Section */}
       <div className="glass-container" style={{ padding: '24px', marginBottom: '24px', display: 'flex', flexWrap: 'wrap', gap: '16px', alignItems: 'center' }}>
         <div style={{ flex: 1, minWidth: '250px' }}>
-          <h3 style={{ color: 'white', marginBottom: '8px', fontSize: '1.2rem' }}>Email Notifications</h3>
-          <p style={{ color: '#9ca3af', fontSize: '0.9rem', margin: 0 }}>Set the receiver email address for new nanny registrations.</p>
+          <h3 style={{ color: 'var(--text-primary)', marginBottom: '8px', fontSize: '1.2rem' }}>Email Notifications</h3>
+          <p style={{ color: 'var(--text-secondary)', fontSize: '0.9rem', margin: 0 }}>Set the receiver email address for new nanny registrations.</p>
         </div>
         <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap', alignItems: 'center' }}>
           <input 
@@ -106,9 +106,9 @@ const AdminPanel = () => {
             style={{ 
               padding: '12px 16px', 
               borderRadius: '8px', 
-              border: '1px solid rgba(255, 255, 255, 0.1)', 
-              background: 'rgba(0, 0, 0, 0.2)',
-              color: 'white',
+              border: '1px solid var(--border-color)', 
+              background: 'var(--input-bg)',
+              color: 'var(--text-primary)',
               outline: 'none',
               width: '250px'
             }} 
@@ -131,50 +131,50 @@ const AdminPanel = () => {
 
       <div className="glass-container" style={{ padding: '24px', overflowX: 'auto' }}>
         {loading ? (
-          <div style={{ textAlign: 'center', padding: '40px', color: '#9ca3af' }}>Loading data...</div>
+          <div style={{ textAlign: 'center', padding: '40px', color: 'var(--text-secondary)' }}>Loading data...</div>
         ) : filteredNannies.length === 0 ? (
-          <div style={{ textAlign: 'center', padding: '40px', color: '#9ca3af' }}>No registrations found.</div>
+          <div style={{ textAlign: 'center', padding: '40px', color: 'var(--text-secondary)' }}>No registrations found.</div>
         ) : (
           <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left' }}>
             <thead>
-              <tr style={{ borderBottom: '1px solid rgba(255,255,255,0.1)' }}>
-                <th style={{ padding: '16px', color: '#9ca3af', fontWeight: '500' }}>ID</th>
-                <th style={{ padding: '16px', color: '#9ca3af', fontWeight: '500' }}>Candidate Name</th>
-                <th style={{ padding: '16px', color: '#9ca3af', fontWeight: '500' }}>Contact Info</th>
-                <th style={{ padding: '16px', color: '#9ca3af', fontWeight: '500' }}>Experience</th>
-                <th style={{ padding: '16px', color: '#9ca3af', fontWeight: '500' }}>Registered On</th>
-                <th style={{ padding: '16px', color: '#9ca3af', fontWeight: '500', textAlign: 'center' }}>Action</th>
+              <tr style={{ borderBottom: '1px solid var(--border-color)' }}>
+                <th style={{ padding: '16px', color: 'var(--text-secondary)', fontWeight: '500' }}>ID</th>
+                <th style={{ padding: '16px', color: 'var(--text-secondary)', fontWeight: '500' }}>Candidate Name</th>
+                <th style={{ padding: '16px', color: 'var(--text-secondary)', fontWeight: '500' }}>Contact Info</th>
+                <th style={{ padding: '16px', color: 'var(--text-secondary)', fontWeight: '500' }}>Experience</th>
+                <th style={{ padding: '16px', color: 'var(--text-secondary)', fontWeight: '500' }}>Registered On</th>
+                <th style={{ padding: '16px', color: 'var(--text-secondary)', fontWeight: '500', textAlign: 'center' }}>Action</th>
               </tr>
             </thead>
             <tbody>
               {filteredNannies.map((nanny) => (
-                <tr key={nanny.id} style={{ borderBottom: '1px solid rgba(255,255,255,0.05)', transition: 'background 0.2s' }} className="table-row-hover">
-                  <td style={{ padding: '16px', color: 'white' }}>#{nanny.id}</td>
-                  <td style={{ padding: '16px', color: 'white', fontWeight: 'bold' }}>{nanny.full_name}</td>
-                  <td style={{ padding: '16px', color: '#d1d5db' }}>
+                <tr key={nanny.id} style={{ borderBottom: '1px solid var(--border-color)', transition: 'background 0.2s' }} className="table-row-hover">
+                  <td style={{ padding: '16px', color: 'var(--text-primary)' }}>#{nanny.id}</td>
+                  <td style={{ padding: '16px', color: 'var(--text-primary)', fontWeight: 'bold' }}>{nanny.full_name}</td>
+                  <td style={{ padding: '16px', color: 'var(--text-primary)' }}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px' }}>
-                      <Phone size={14} color="#8b5cf6" /> {nanny.mobile_number}
+                      <Phone size={14} color="var(--primary)" /> {nanny.mobile_number}
                     </div>
                     {nanny.email_address && (
                       <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '0.85rem' }}>
-                        <Mail size={14} color="#8b5cf6" /> {nanny.email_address}
+                        <Mail size={14} color="var(--primary)" /> {nanny.email_address}
                       </div>
                     )}
                   </td>
-                  <td style={{ padding: '16px', color: '#d1d5db' }}>
+                  <td style={{ padding: '16px', color: 'var(--text-primary)' }}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                      <Briefcase size={16} color="#8b5cf6" /> {nanny.years_experience} Years
+                      <Briefcase size={16} color="var(--primary)" /> {nanny.years_experience} Years
                     </div>
                   </td>
-                  <td style={{ padding: '16px', color: '#d1d5db' }}>
+                  <td style={{ padding: '16px', color: 'var(--text-primary)' }}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                      <Calendar size={16} color="#8b5cf6" /> 
+                      <Calendar size={16} color="var(--primary)" /> 
                       {new Date(nanny.created_at).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })}
                     </div>
                   </td>
                   <td style={{ padding: '16px', textAlign: 'center' }}>
                     <Link to={`/admin/nanny/${nanny.id}`} style={{ textDecoration: 'none' }}>
-                      <button className="btn" style={{ padding: '8px 16px', fontSize: '0.9rem', display: 'inline-flex', alignItems: 'center', gap: '8px', background: 'rgba(139, 92, 246, 0.1)', border: '1px solid rgba(139, 92, 246, 0.3)', color: '#a78bfa' }}>
+                      <button className="btn" style={{ padding: '8px 16px', fontSize: '0.9rem', display: 'inline-flex', alignItems: 'center', gap: '8px', background: 'var(--primary-light)', border: '1px solid var(--border-color)', color: 'var(--text-secondary)' }}>
                         <Eye size={16} /> View Profile
                       </button>
                     </Link>

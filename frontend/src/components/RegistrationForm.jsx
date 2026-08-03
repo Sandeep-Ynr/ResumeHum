@@ -84,7 +84,7 @@ const RegistrationForm = () => {
     return (
       <div className="glass-container form-section" style={{ textAlign: 'center', padding: '60px 20px' }}>
         <div style={{ width: '80px', height: '80px', background: 'var(--success)', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 24px' }}>
-          <CheckSquare size={40} color="white" />
+          <CheckSquare size={40} color="var(--text-primary)" />
         </div>
         <h2>Registration Successful!</h2>
         <p style={{ color: 'var(--text-secondary)', marginTop: '12px' }}>Your application has been submitted and is under review.</p>
