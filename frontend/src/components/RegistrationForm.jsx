@@ -231,27 +231,27 @@ const RegistrationForm = () => {
         </div>
         <div className="grid-3" style={{ marginTop: '24px' }}>
           <div>
-            <label style={{ display: 'block', marginBottom: '8px' }}>Upload Front of ID *</label>
+            <label style={{ display: 'block', marginBottom: '8px' }}>Upload Front of ID (Optional)</label>
             <label className="file-upload-btn">
               <UploadCloud size={24} />
               <span>Upload Front Side</span>
-              <input type="file" {...register("idFront", { required: true })} accept="image/*,.pdf" />
+              <input type="file" {...register("idFront")} accept="image/*,.pdf" />
             </label>
           </div>
           <div>
-            <label style={{ display: 'block', marginBottom: '8px' }}>Upload Back of ID *</label>
+            <label style={{ display: 'block', marginBottom: '8px' }}>Upload Back of ID (Optional)</label>
             <label className="file-upload-btn">
               <UploadCloud size={24} />
               <span>Upload Back Side</span>
-              <input type="file" {...register("idBack", { required: true })} accept="image/*,.pdf" />
+              <input type="file" {...register("idBack")} accept="image/*,.pdf" />
             </label>
           </div>
           <div>
-            <label style={{ display: 'block', marginBottom: '8px' }}>Selfie for Verification *</label>
+            <label style={{ display: 'block', marginBottom: '8px' }}>Selfie for Verification (Optional)</label>
             <label className="file-upload-btn">
               <Camera size={24} />
               <span>Take Selfie</span>
-              <input type="file" {...register("selfie", { required: true })} accept="image/*" capture="user" />
+              <input type="file" {...register("selfie")} accept="image/*" capture="user" />
             </label>
           </div>
           <div>
