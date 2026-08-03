@@ -13,9 +13,9 @@ function App() {
           <p>Please fill in all the details accurately</p>
           <div style={{ marginTop: '15px' }}>
             <a href="nanny.html" target="_blank" rel="noopener noreferrer" style={{ 
-              color: 'white', 
+              color: 'var(--text-primary)', 
               textDecoration: 'none', 
-              border: '1px solid white', 
+              border: '1px solid var(--text-primary)', 
               padding: '8px 16px', 
               borderRadius: '20px',
               fontSize: '0.9rem',
