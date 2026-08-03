@@ -1,0 +1,662 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nanny Flyer</title>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@500;700&family=Montserrat:wght@600;700;800;900&family=Open+Sans:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --bg-color: #fcf9f2;
+            --text-dark: #5e3a3f;
+            --accent-pink: #c9848c;
+            --light-pink-bg: #f9eaea;
+            --dark-box-bg: #4a2e31;
+            --white: #ffffff;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Open Sans', sans-serif;
+            background-color: #e6e6e6;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .flyer-container {
+            background-color: var(--bg-color);
+            width: 100%;
+            max-width: 800px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+            position: relative;
+            overflow: hidden;
+            border-radius: 10px; /* Optional, adds a premium feel */
+        }
+
+        /* Top Image Section */
+        .top-section {
+            display: flex;
+            position: relative;
+            min-height: 420px;
+        }
+
+        .header-text {
+            width: 55%;
+            padding: 40px 30px 30px 40px;
+            z-index: 2;
+            position: relative;
+        }
+
+        .image-container {
+            width: 55%;
+            position: absolute;
+            right: 0;
+            top: 0;
+            height: 100%;
+            /* Using a placeholder family image that fits the vibe */
+            background-image: url('https://images.unsplash.com/photo-1543269664-56d56959b391?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80');
+            background-size: cover;
+            background-position: center 20%;
+            /* Soft fade on the left edge */
+            mask-image: linear-gradient(to right, transparent 0%, black 20%);
+            -webkit-mask-image: linear-gradient(to right, transparent 0%, black 20%);
+        }
+
+        .script-text {
+            font-family: 'Dancing Script', cursive;
+            color: var(--text-dark);
+            font-size: 3.5rem;
+            line-height: 1;
+            margin-bottom: -5px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .script-text .fa-heart {
+            font-size: 2rem;
+            color: var(--bg-color);
+            -webkit-text-stroke: 2px var(--text-dark);
+            font-weight: 400;
+        }
+
+        .main-title {
+            font-family: 'Montserrat', sans-serif;
+            color: var(--text-dark);
+            font-size: 4.5rem;
+            font-weight: 900;
+            line-height: 0.9;
+            letter-spacing: -1.5px;
+            margin-bottom: 15px;
+        }
+
+        .sub-title {
+            font-family: 'Montserrat', sans-serif;
+            color: var(--accent-pink);
+            font-size: 1.8rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 25px;
+        }
+
+        .location-badge {
+            background-color: var(--text-dark);
+            color: var(--white);
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 18px;
+            border-radius: 25px;
+            font-weight: 600;
+            font-size: 1rem;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+
+        .intro-text {
+            color: var(--text-dark);
+            font-size: 1.15rem;
+            line-height: 1.5;
+            font-weight: 600;
+            max-width: 95%;
+        }
+
+        .badge-circle {
+            position: absolute;
+            right: 40px;
+            bottom: -50px;
+            width: 190px;
+            height: 190px;
+            background-color: var(--bg-color);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border: 2px dashed #dcbabf;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.15);
+            z-index: 3;
+            padding: 8px;
+        }
+        
+        .badge-inner {
+            border: 1px dashed #dcbabf;
+            border-radius: 50%;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        .badge-script {
+            font-family: 'Dancing Script', cursive;
+            color: var(--text-dark);
+            font-size: 1.8rem;
+            margin-bottom: -5px;
+        }
+
+        .badge-text {
+            font-family: 'Montserrat', sans-serif;
+            color: var(--text-dark);
+            font-weight: 700;
+            font-size: 1.05rem;
+            line-height: 1.2;
+            margin-top: 5px;
+        }
+
+        .badge-icon {
+            color: var(--accent-pink);
+            margin-top: 8px;
+            font-size: 1.3rem;
+        }
+
+        /* Bottom Section */
+        .bottom-section {
+            display: flex;
+            padding: 50px 40px 40px 40px;
+            gap: 30px;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Left Column */
+        .left-col {
+            flex: 1.1;
+        }
+
+        .ideal-candidate {
+            background-color: var(--light-pink-bg);
+            border-radius: 12px;
+            padding: 30px 20px 20px 20px;
+            position: relative;
+        }
+
+        .section-title-badge {
+            background-color: var(--accent-pink);
+            color: var(--white);
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+            padding: 10px 20px;
+            border-radius: 8px;
+            display: inline-block;
+            position: absolute;
+            top: -20px;
+            left: 20px;
+            font-size: 1.2rem;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        .ideal-list {
+            list-style: none;
+            margin-top: 10px;
+        }
+
+        .ideal-list li {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+            padding-bottom: 20px;
+            border-bottom: 2px dotted #e6c8ca;
+        }
+
+        .ideal-list li:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+
+        .icon-circle {
+            background-color: var(--accent-pink);
+            color: var(--white);
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.5rem;
+            flex-shrink: 0;
+        }
+
+        .ideal-list p {
+            color: var(--text-dark);
+            font-size: 0.95rem;
+            font-weight: 600;
+            line-height: 1.4;
+        }
+
+        /* Middle Column */
+        .middle-col {
+            flex: 0.9;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding-top: 10px;
+        }
+
+        .house-icon-large {
+            position: relative;
+            color: var(--text-dark);
+            margin-bottom: 15px;
+        }
+        
+        .house-icon-large i.fa-house {
+            font-size: 4rem;
+            color: #7b5b5c;
+        }
+
+        .house-icon-large i.fa-heart {
+            position: absolute;
+            top: 55%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: var(--accent-pink);
+            font-size: 1.8rem;
+        }
+        
+        .house-decoration {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .leaf-icon {
+            color: #8fa082;
+            font-size: 1.5rem;
+        }
+
+        .we-offer-title {
+            color: var(--accent-pink);
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+            font-size: 1.4rem;
+            letter-spacing: 1px;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+        }
+
+        .offer-list {
+            list-style: none;
+            width: 100%;
+        }
+
+        .offer-list li {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            margin-bottom: 18px;
+            padding-bottom: 18px;
+            border-bottom: 2px dotted #e6c8ca;
+            color: var(--text-dark);
+            font-weight: 600;
+            font-size: 0.95rem;
+            line-height: 1.4;
+        }
+
+        .offer-list li:last-child {
+            border-bottom: none;
+        }
+
+        .offer-list .fa-heart {
+            color: var(--accent-pink);
+            margin-top: 4px;
+            font-size: 0.9rem;
+        }
+        
+        .thank-you-section {
+            text-align: center;
+            margin-top: auto;
+            padding-top: 20px;
+        }
+
+        .thank-you-script {
+            font-family: 'Dancing Script', cursive;
+            color: var(--accent-pink);
+            font-size: 2.8rem;
+        }
+        
+        .thank-you-heart {
+            color: var(--accent-pink);
+            font-size: 1.3rem;
+            margin-top: 5px;
+        }
+
+        /* Right Column */
+        .right-col {
+            flex: 1;
+            background-color: var(--dark-box-bg);
+            border-radius: 12px;
+            padding: 30px 20px;
+            color: var(--white);
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+        }
+
+        .interested-title {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+            font-size: 1.5rem;
+            margin-bottom: 8px;
+        }
+
+        .scan-apply {
+            font-family: 'Montserrat', sans-serif;
+            color: var(--accent-pink);
+            font-weight: 600;
+            font-size: 1.1rem;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            position: relative;
+        }
+        
+        .arrow-curved {
+            position: absolute;
+            right: -25px;
+            top: 5px;
+            width: 30px;
+            height: 30px;
+            border-top: 2px solid var(--accent-pink);
+            border-right: 2px solid var(--accent-pink);
+            border-top-right-radius: 10px;
+            transform: skew(-20deg);
+        }
+        .arrow-curved::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            right: -6px;
+            border-width: 6px;
+            border-style: solid;
+            border-color: var(--accent-pink) transparent transparent var(--accent-pink);
+            transform: rotate(45deg);
+        }
+
+        .qr-code {
+            background-color: var(--white);
+            padding: 10px;
+            border-radius: 8px;
+            width: 160px;
+            height: 160px;
+            margin-bottom: 20px;
+        }
+
+        .qr-code img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .qr-text {
+            font-size: 0.95rem;
+            line-height: 1.4;
+            margin-bottom: 20px;
+            padding-bottom: 20px;
+            border-bottom: 1px dashed rgba(255,255,255,0.3);
+            width: 90%;
+        }
+
+        .contact-icon {
+            font-size: 2.2rem;
+            color: var(--accent-pink);
+            margin-bottom: 12px;
+            background-color: #f7e6e8;
+            width: 50px;
+            height: 50px;
+            border-radius: 5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .contact-text {
+            font-size: 0.95rem;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .contact-thanks {
+            font-family: 'Dancing Script', cursive;
+            color: var(--accent-pink);
+            font-size: 1.6rem;
+            margin-top: 5px;
+        }
+
+        /* Footer */
+        .footer {
+            background-color: var(--text-dark); /* Using dark color from original flyer */
+            color: var(--white);
+            text-align: center;
+            padding: 18px;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 800;
+            font-size: 1.6rem;
+            letter-spacing: 1.5px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+        }
+        
+        .footer-house {
+            position: relative;
+        }
+        
+        .footer-house i.fa-house {
+            font-size: 2rem;
+            color: var(--white);
+        }
+        
+        .footer-house i.fa-heart {
+            position: absolute;
+            top: 55%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: var(--accent-pink);
+            font-size: 1rem;
+        }
+
+        .footer > i.fa-heart {
+            font-size: 1.4rem;
+            color: var(--accent-pink);
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 850px) {
+            .bottom-section {
+                flex-direction: column;
+                padding: 40px 20px;
+            }
+            .top-section {
+                flex-direction: column;
+            }
+            .header-text {
+                width: 100%;
+            }
+            .image-container {
+                position: relative;
+                width: 100%;
+                height: 350px;
+                mask-image: none;
+                -webkit-mask-image: none;
+            }
+            .badge-circle {
+                bottom: -30px;
+                right: 50%;
+                transform: translateX(50%);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="flyer-container">
+        <!-- Top Section -->
+        <div class="top-section">
+            <div class="header-text">
+                <div class="script-text">Seeking <i class="fa-regular fa-heart"></i></div>
+                <div class="main-title">LOVING<br>LIVE-IN<br>NANNY</div>
+                <div class="sub-title"><i class="fa-solid fa-heart"></i> For our children</div>
+                
+                <div class="location-badge">
+                    <i class="fa-solid fa-location-dot"></i> Flower Mound / Coppell Area
+                </div>
+                
+                <p class="intro-text">
+                    We are looking for a caring, patient, and dependable nanny to help care for our school going children.
+                </p>
+            </div>
+            
+            <div class="image-container"></div>
+            
+            <div class="badge-circle">
+                <div class="badge-inner">
+                    <div class="badge-script">Become a</div>
+                    <div class="badge-text">TRUSTED &<br>CARING PART<br>OF OUR FAMILY</div>
+                    <div class="badge-icon"><i class="fa-solid fa-heart"></i></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bottom Section -->
+        <div class="bottom-section">
+            <!-- Left Column -->
+            <div class="left-col">
+                <div class="ideal-candidate">
+                    <div class="section-title-badge">IDEAL CANDIDATE:</div>
+                    <ul class="ideal-list">
+                        <li>
+                            <div class="icon-circle">
+                                <i class="fa-solid fa-person-breastfeeding"></i>
+                            </div>
+                            <p>Prior childcare/nanny experience with toddlers and babies</p>
+                        </li>
+                        <li>
+                            <div class="icon-circle">
+                                <i class="fa-solid fa-heart"></i>
+                            </div>
+                            <p>Warm, loving, patient, and engaging with children</p>
+                        </li>
+                        <li>
+                            <div class="icon-circle">
+                                <i class="fa-solid fa-utensils"></i>
+                            </div>
+                            <p>Ability to cook and manage light household work when kids are in school</p>
+                        </li>
+                        <li>
+                            <div class="icon-circle">
+                                <i class="fa-solid fa-comments"></i>
+                            </div>
+                            <p>We are working professionals and need someone who is responsible, and has good communication skills.</p>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Middle Column -->
+            <div class="middle-col">
+                <div class="house-decoration">
+                    <i class="fa-solid fa-leaf leaf-icon"></i>
+                    <div class="house-icon-large">
+                        <i class="fa-solid fa-house"></i>
+                        <i class="fa-solid fa-heart"></i>
+                    </div>
+                    <i class="fa-solid fa-leaf leaf-icon" style="transform: scaleX(-1);"></i>
+                </div>
+                <div class="we-offer-title">WE OFFER:</div>
+                
+                <ul class="offer-list">
+                    <li>
+                        <i class="fa-solid fa-heart"></i>
+                        <span>A warm, respectful, and welcoming home environment</span>
+                    </li>
+                    <li>
+                        <i class="fa-solid fa-heart"></i>
+                        <span>Love, trust, and mutual respect</span>
+                    </li>
+                    <li>
+                        <i class="fa-solid fa-heart"></i>
+                        <span>You will be valued as an important member of our family</span>
+                    </li>
+                </ul>
+                
+                <div class="thank-you-section">
+                    <div class="thank-you-script">Thank You!</div>
+                    <i class="fa-solid fa-heart thank-you-heart"></i>
+                </div>
+            </div>
+
+            <!-- Right Column -->
+            <div class="right-col">
+                <div class="interested-title">INTERESTED?</div>
+                <div class="scan-apply">
+                    SCAN TO APPLY
+                    <div class="arrow-curved"></div>
+                </div>
+                
+                <div class="qr-code">
+                    <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://example.com/apply" alt="QR Code">
+                </div>
+                
+                <p class="qr-text">Scan the QR code to fill out our quick application form.</p>
+                
+                <div class="contact-icon">
+                    <i class="fa-solid fa-file-lines"></i>
+                </div>
+                <p class="contact-text">We will contact qualified candidates.</p>
+                <div class="contact-thanks">Thank you for your interest!</div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            <div class="footer-house">
+                <i class="fa-solid fa-house"></i>
+                <i class="fa-solid fa-heart"></i>
+            </div>
+            LIVE-IN APPLICANTS ONLY
+            <i class="fa-solid fa-heart"></i>
+        </div>
+    </div>
+</body>
+</html>

@@ -11,6 +11,20 @@ function App() {
         <header className="app-header">
           <h1>NANNY REGISTRATION</h1>
           <p>Please fill in all the details accurately</p>
+          <div style={{ marginTop: '15px' }}>
+            <a href="nanny.html" target="_blank" rel="noopener noreferrer" style={{ 
+              color: 'white', 
+              textDecoration: 'none', 
+              border: '1px solid white', 
+              padding: '8px 16px', 
+              borderRadius: '20px',
+              fontSize: '0.9rem',
+              fontWeight: 'bold',
+              display: 'inline-block'
+            }}>
+              Contact Us (Flyer)
+            </a>
+          </div>
         </header>
         
         <main style={{ maxWidth: '1200px', margin: '0 auto', padding: '0 20px 60px' }}>
